@@ -30,8 +30,8 @@ app.get("/", (req, res) => {
 // Main Function
 async function run() {
   try {
-    await client.connect();
-    console.log("Successfully connected to MongoDB Atlas!");
+    // await client.connect();
+    // console.log("Successfully connected to MongoDB Atlas!");
 
     // Main database
     const db = client.db("StudyMateDB");
@@ -193,44 +193,6 @@ async function run() {
       });
       res.send(result);
     });
-
-    // DEMO SEED (optional)
-    app.post("/seed-demo", async (req, res) => {
-      const count = await partnersCollection.countDocuments();
-      if (count > 0) {
-        return res.send({ message: "Database already has data" });
-      }
-
-      const demoPartners = [
-        {
-          name: "Aisha Rahman",
-          subject: "Mathematics",
-          studyMode: "Online",
-          location: "Dhaka",
-          experienceLevel: "Intermediate",
-          rating: 4.7,
-          partnerCount: 0,
-          email: "aisha@example.com",
-          createdAt: new Date(),
-        },
-        {
-          name: "Rahim Khan",
-          subject: "Physics",
-          studyMode: "Offline",
-          location: "Chittagong",
-          experienceLevel: "Expert",
-          rating: 4.9,
-          partnerCount: 0,
-          email: "rahim@example.com",
-          createdAt: new Date(),
-        },
-      ];
-
-      const result = await partnersCollection.insertMany(demoPartners);
-      res.send({ message: "Demo data added!", result });
-    });
-
-    console.log("All routes are ready!");
   } finally {
     // await client.close();
   }
