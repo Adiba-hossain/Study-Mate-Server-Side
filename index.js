@@ -114,6 +114,19 @@ async function run() {
     });
 
     // SEARCH partners by name, subject, or location
+    app.get("/search", async (req, res) => {
+      const searchText = req.query.search || "";
+      const result = await partnersCollection
+        .find({
+          $or: [
+            { name: { $regex: searchText, $options: "i" } },
+            { subject: { $regex: searchText, $options: "i" } },
+            { location: { $regex: searchText, $options: "i" } },
+          ],
+        })
+        .toArray();
+      res.send(result);
+    });
 
     // -----------------Request Routes----------------
 
@@ -180,6 +193,8 @@ async function run() {
       });
       res.send(result);
     });
+
+    console.log("All routes are ready!");
   } finally {
     // await client.close();
   }
